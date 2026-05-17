@@ -1,7 +1,7 @@
 # G2 Gate Evidence — Design Approved
 
 **Gate:** G2 — Design Approved  
-**Status:** SUBMITTED FOR REVIEW  
+**Status:** RESUBMITTED — CTO findings fixed (v2)  
 **Date:** 2026-05-17  
 **Proposed by:** @pm (package assembly) + @architect (deliverables)  
 **Pending:** CTO countersign on ADR-001, ADR-002, ADR-003  
@@ -63,15 +63,23 @@ docs/02-design/01-ADRs/
 
 ---
 
-## Decisions Pending CTO Input
+## Decisions — CTO Confirmed (2026-05-17)
 
-| # | Decision | Architect Proposal | CTO Action Needed |
-|---|----------|-------------------|------------------|
-| 1 | COOP/COEP scope `/editor/*` only | Yes — avoid breaking non-editor routes | Confirm or amend |
-| 2 | Lazy-load WASM bundle on editor entry | Recommended — saves 3-5MB initial load | Confirm |
-| 3 | `better-auth` OWASP ASVS L2 validation | Defer to G3 (pre-launch security gate) | Confirm timing |
-| 4 | Plausible self-hosted vs managed | Self-hosted preferred (zero 3rd-party) | Confirm or PM decides |
-| 5 | Desktop release cadence | Monthly snapshot, 2-4 week lag from web | Confirm |
+| # | Decision | CTO Verdict |
+|---|----------|------------|
+| 1 | COOP/COEP scope `/editor/*` only | ✅ Confirmed |
+| 2 | Lazy-load WASM bundle on editor entry | ✅ Mandatory for perf baseline |
+| 3 | `better-auth` OWASP ASVS L2 validation | ✅ Start design at G2, complete evidence at G3 |
+| 4 | Plausible self-hosted vs managed | ✅ Self-hosted for prod, managed OK for pilot/staging |
+| 5 | Desktop release cadence | ✅ Monthly snapshot, 2-4 week lag + cherry-pick critical |
+
+## CTO Review Findings — Fixed (v2)
+
+| # | Finding | Severity | Fix Applied |
+|---|---------|----------|-------------|
+| 1 | COOP/COEP headers claimed as implemented in `next.config.ts` but not present | High | Reworded §8.1 as prescriptive ("MUST be added"), added implementation snippet, flagged as sprint task |
+| 2 | ADR-003 `[workspace.package].version` claimed to exist in `Cargo.toml` but doesn't | High | Reworded as current-vs-target state, marked R-01/R-03 as not-yet-implemented with status column |
+| 3 | ADR-003 `file:` pin policy described as current, but `package.json` uses `^0.2.10` from npm | Medium | Corrected R-03 to reflect actual npm semver range, `file:` as future policy |
 
 ---
 

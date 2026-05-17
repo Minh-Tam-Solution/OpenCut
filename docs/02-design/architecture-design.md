@@ -403,7 +403,26 @@ Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Embedder-Policy: require-corp
 ```
 
-These headers are applied **only on the `/editor/*` route** via `next.config.ts` headers configuration. Other routes (landing, auth) do not require them, preserving embeddability.
+These headers **MUST be added** to the `/editor/*` route via `next.config.ts` `headers()` configuration. As of commit `28d22d45`, `next.config.ts` does not yet include these headers — this is an **implementation task** for the first build sprint.
+
+Other routes (landing, auth) do not require these headers, preserving embeddability.
+
+**Implementation required:**
+
+```typescript
+// next.config.ts — add to nextConfig
+async headers() {
+  return [
+    {
+      source: "/editor/:path*",
+      headers: [
+        { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+        { key: "Cross-Origin-Embedder-Policy", value: "require-corp" },
+      ],
+    },
+  ];
+},
+```
 
 ### 8.2 Content Security Policy
 

@@ -56,28 +56,46 @@ Additionally, the Rust workspace contains internal crates that are not part of t
 
 ### 1. Version Coupling Policy — Semver Pin with Workspace Coherence
 
-The `opencut-wasm` crate and the desktop app use a **single-source versioning model** via Cargo workspace:
+The `opencut-wasm` crate and the desktop app will use a **single-source versioning model** via Cargo workspace.
+
+**Current state** (as of commit `28d22d45`):
 
 ```toml
-# rust/Cargo.toml (workspace root)
+# Cargo.toml (workspace root) — ACTUAL
 [workspace]
-members = ["crates/*", "wasm"]
 resolver = "2"
-
-[workspace.package]
-version = "0.2.10"
+members = [
+    "apps/desktop",
+    "rust/crates/time",
+    "rust/crates/bridge",
+    "rust/crates/effects",
+    "rust/crates/gpu",
+    "rust/crates/masks",
+    "rust/wasm", "rust/crates/compositor",
+]
 ```
 
-All crates in the workspace share the same version. This guarantees that `apps/desktop/` (depending on `compositor = { path = "../../rust/crates/compositor" }`) and `apps/web/` (depending on `opencut-wasm = "0.2.10"`) are always built from the same source revision.
+Note: The workspace currently has **no `[workspace.package]` section** and no shared version field. Individual crates manage their own versions. `apps/web/package.json` pins `opencut-wasm` via semver range `"^0.2.10"` from the npm registry.
 
-**Policy rules:**
+**Target state** (implementation task for build sprint):
 
-| Rule | Enforcement |
-|------|------------|
-| R-01 | All crates in `rust/crates/` and `rust/wasm/` share the workspace `version`. |
-| R-02 | `apps/desktop/Cargo.toml` pins the compositor crate via `path` (not crates.io). |
-| R-03 | `apps/web/package.json` pins `opencut-wasm` via `file:../../rust/wasm/pkg` in dev, and via exact version `"0.2.10"` in production builds. |
-| R-04 | The `rust/wasm/pkg/package.json` version is auto-generated from `Cargo.toml` during `wasm-pack build`. |
+```toml
+# Cargo.toml — ADD workspace-level version
+[workspace.package]
+version = "0.2.10"
+edition = "2024"
+```
+
+Each crate's `Cargo.toml` would then use `version.workspace = true` to inherit the shared version.
+
+**Policy rules** (prescriptive — to be implemented):
+
+| Rule | Enforcement | Current Status |
+|------|------------|----------------|
+| R-01 | All crates in `rust/crates/` and `rust/wasm/` share the workspace `version`. | ❌ Not yet — individual versions |
+| R-02 | `apps/desktop/Cargo.toml` pins the compositor crate via `path` (not crates.io). | ✅ Already uses `path` deps |
+| R-03 | `apps/web/package.json` pins `opencut-wasm` via `"^0.2.10"` (semver range from npm). In future: `file:../../rust/wasm/pkg` for local dev, exact version for production. | ⚠️ Partial — uses `^0.2.10` from npm |
+| R-04 | The `rust/wasm/pkg/package.json` version is auto-generated from `Cargo.toml` during `wasm-pack build`. | ✅ Already works |
 
 ### 2. Breaking Change Protocol — API Version Bump + Migration Window
 
@@ -176,7 +194,7 @@ jobs:
 - **Single source of truth:** The workspace version guarantees that web and desktop run the same compositor logic. No drift between JS bindings and native crate.
 - **Clear API boundaries:** Public vs internal crate distinction makes refactoring safe. The `gpu/` crate can evolve without fear of breaking consumers.
 - **Predictable release rhythm:** Web continuous delivery + desktop monthly snapshots balance iteration speed with QA rigor.
-- **No git submodules:** Using Cargo `path` dependencies and npm `file:` links eliminates submodule complexity. The entire repo is always self-consistent at any commit.
+- **No git submodules:** Using Cargo `path` dependencies (already in place) and npm semver pins eliminates submodule complexity. Once the `file:` dev-link policy (R-03) is implemented, the entire repo will be fully self-consistent at any commit.
 
 ### Negative / Risks
 
