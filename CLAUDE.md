@@ -5,7 +5,7 @@
 OpenCut project managed with EndiorBot SDLC Framework.
 
 **Tier:** STANDARD
-**Framework:** SDLC 6.3.0
+**Framework:** SDLC 6.3.1
 
 ---
 
