@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0",
+  "framework_version": "6.3.0",
+  "generator": "endiorbot",
+  "generated_at": "2026-05-16T01:36:31.513Z",
+  "project": {
+    "id": "opencut",
+    "name": "OpenCut"
+  },
+  "tier": "STANDARD",
+  "stages": {
+    "00-foundation": "docs/00-foundation",
+    "01-planning": "docs/01-planning",
+    "02-design": "docs/02-design",
+    "04-build": "docs/04-build",
+    "05-test": "docs/05-test",
+    "06-deploy": "docs/06-deploy",
+    "08-collaborate": "docs/08-collaborate"
+  },
+  "gates": {
+    "current": "G1",
+    "passed": ["G0.1"],
+    "G0.1": {
+      "passed_date": "2026-05-17",
+      "evidence": "docs/evidence/G0.1/gate-evidence.md",
+      "approved_by": ["CTO", "CEO"]
+    }
+  },
+  "techStack": {
+    "language": "Multi-language",
+    "hasTypeScript": true,
+    "hasDocker": true,
+    "hasCI": true,
+    "dependencies": [
+      "@types/react",
+      "@types/react-dom",
+      "better-auth",
+      "next",
+      "opencut",
+      "opencut-wasm"
+    ],
+    "devDependencies": [
+      "@eslint/js",
+      "@next/eslint-plugin-next",
+      "eslint",
+      "eslint-config-prettier",
+      "eslint-plugin-jsx-a11y",
+      "eslint-plugin-react",
+      "eslint-plugin-react-hooks",
+      "globals",
+      "prettier",
+      "turbo",
+      "typescript",
+      "typescript-eslint"
+    ],
+    "scripts": {
+      "build:tools": "turbo run build --filter=@opencut/tools",
+      "build:wasm": "wasm-pack build rust/wasm --target bundler --out-dir pkg",
+      "build:web": "turbo run build --filter=@opencut/web",
+      "deploy:web": "turbo run deploy --filter=@opencut/web",
+      "dev:tools": "turbo run dev --filter=@opencut/tools",
+      "dev:wasm": "cargo watch -w rust/crates -w rust/wasm/src -s 'wasm-pack build rust/wasm --target bundler --out-dir pkg'",
+      "dev:web": "turbo run dev --filter=@opencut/web",
+      "format:web": "prettier apps/web/src/services/renderer --write",
+      "generate:fonts": "npx tsx apps/web/scripts/generate-font-sprites.ts",
+      "lint:web": "eslint apps/web/src --ext .ts,.tsx",
+      "lint:web:fix": "eslint apps/web/src --ext .ts,.tsx --fix",
+      "preview:web": "turbo run preview --filter=@opencut/web",
+      "publish:wasm": "bun run build:wasm && npm publish rust/wasm/pkg --access public",
+      "start:tools": "turbo run start --filter=@opencut/tools",
+      "test": "bun test"
+    },
+    "packageManager": "docker"
+  },
+  "analyzedAt": "2026-05-16T01:36:31.513Z"
+}
