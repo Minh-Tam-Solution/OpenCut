@@ -18,12 +18,18 @@
     "08-collaborate": "docs/08-collaborate"
   },
   "gates": {
-    "current": "G1",
-    "passed": ["G0.1"],
+    "current": "G2",
+    "passed": ["G0.1", "G1"],
     "G0.1": {
       "passed_date": "2026-05-17",
       "evidence": "docs/evidence/G0.1/gate-evidence.md",
       "approved_by": ["CTO", "CEO"]
+    },
+    "G1": {
+      "passed_date": "2026-05-17",
+      "evidence": "docs/evidence/G1/cto-sign-off.md",
+      "approved_by": ["CTO"],
+      "conditions": "3 deferrals accepted (OI-001→G2, OI-003 waiver, OI-005→G2)"
     }
   },
   "techStack": {
