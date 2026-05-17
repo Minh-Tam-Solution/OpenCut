@@ -26,3 +26,7 @@ target/
 .cargo-tools/
 
 rust-migration-notes.md
+# Claude Code / EndiorBot
+.claude/
+.endiorbot/
+.sdlc-framework
