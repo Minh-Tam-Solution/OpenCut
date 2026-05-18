@@ -1,3 +1,11 @@
+import { db } from "@/db";
+import { sql } from "drizzle-orm";
+
 export async function GET() {
-	return new Response("OK", { status: 200 });
+	try {
+		await db.execute(sql`SELECT 1`);
+		return Response.json({ status: "ok", db: "connected" });
+	} catch {
+		return Response.json({ status: "error", db: "unavailable" }, { status: 503 });
+	}
 }

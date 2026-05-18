@@ -78,18 +78,19 @@ jobs:
       - name: Lint
         working-directory: apps/web
         run: bun run lint
-        continue-on-error: true
 
       - name: Type check
         working-directory: apps/web
         run: bunx tsc --noEmit
-        continue-on-error: true
 
-      - name: Run JS tests
+      - name: Run unit tests
         working-directory: apps/web
-        run: bun test
-        continue-on-error: true
+        run: bun test --ignore-pattern="**/__tests__/auth-roundtrip*"
 
       - name: Run Rust tests
         run: cargo test --workspace
-        continue-on-error: true
+
+      - name: Run integration tests (requires server)
+        working-directory: apps/web
+        if: false  # Enable when CI has DB service container
+        run: bun test src/auth/__tests__/auth-roundtrip.test.ts
