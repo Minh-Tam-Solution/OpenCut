@@ -22,6 +22,11 @@ export const auth = betterAuth({
 	},
 	emailAndPassword: {
 		enabled: true,
+		minPasswordLength: 12,
+	},
+	session: {
+		expiresIn: 60 * 60 * 24 * 7, // 7 days
+		updateAge: 60 * 60 * 24, // refresh daily
 	},
 	rateLimit: {
 		storage: "secondary-storage",
