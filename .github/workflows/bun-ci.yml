@@ -75,7 +75,21 @@ jobs:
         working-directory: apps/web
         run: bun run build
 
-      - name: Run tests
+      - name: Lint
         working-directory: apps/web
-        run: echo "No tests implemented yet"
+        run: bun run lint
+        continue-on-error: true
+
+      - name: Type check
+        working-directory: apps/web
+        run: bunx tsc --noEmit
+        continue-on-error: true
+
+      - name: Run JS tests
+        working-directory: apps/web
+        run: bun test
+        continue-on-error: true
+
+      - name: Run Rust tests
+        run: cargo test --workspace
         continue-on-error: true
