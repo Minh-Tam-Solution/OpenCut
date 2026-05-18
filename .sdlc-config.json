@@ -18,8 +18,8 @@
     "08-collaborate": "docs/08-collaborate"
   },
   "gates": {
-    "current": "G-Sprint",
-    "passed": ["G0.1", "G1", "G2"],
+    "current": "G3",
+    "passed": ["G0.1", "G1", "G2", "G-Sprint"],
     "G0.1": {
       "passed_date": "2026-05-17",
       "evidence": "docs/evidence/G0.1/gate-evidence.md",
@@ -36,6 +36,13 @@
       "evidence": "docs/evidence/G2/gate-evidence.md",
       "approved_by": ["CTO"],
       "conditions": "3 carry-forward: COOP/COEP impl, lazy-load WASM, OWASP ASVS L2 evidence at G3"
+    },
+    "G-Sprint": {
+      "passed_date": "2026-05-18",
+      "evidence": "docs/evidence/G-Sprint/sprint-close-report.md",
+      "approved_by": ["PM"],
+      "sprint": "Foundation Sprint (Sprint 1)",
+      "velocity": "21/21 points"
     }
   },
   "techStack": {
