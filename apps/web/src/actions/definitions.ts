@@ -21,6 +21,15 @@ export interface TActionDefinition extends TActionBaseDefinition {
 	defaultShortcuts?: readonly ShortcutKey[];
 }
 
+export const ACTIONS_WITH_REQUIRED_ARGS: readonly string[] = [
+	"remove-media-asset",
+	"remove-media-assets",
+];
+
+export function isActionWithOptionalArgs(value: string): value is TActionWithOptionalArgs {
+	return value in ACTIONS && !ACTIONS_WITH_REQUIRED_ARGS.includes(value);
+}
+
 export const ACTIONS = {
 	"toggle-play": {
 		description: "Play/Pause",
