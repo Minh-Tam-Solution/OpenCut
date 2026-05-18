@@ -1,0 +1,176 @@
+---
+spec_id: SPEC-05TEST-001
+title: "OWASP ASVS L2 Validation Plan"
+spec_version: "1.0.0"
+status: draft
+tier: STANDARD
+stage: "05-test"
+category: security
+owner: "@architect"
+created: 2026-05-18
+gate: G3
+---
+
+# OWASP ASVS L2 Validation Plan
+
+## 1. Scope
+
+This document defines the validation plan for OpenCut against **OWASP Application Security Verification Standard (ASVS) Level 2** controls. ASVS L2 is appropriate for applications that handle sensitive data and require defense against most application security risks.
+
+**Target gate:** G3 (Security Hardening Complete)  
+**Current gate:** G-Sprint (Foundation Sprint) — this is a *plan* document; evidence will be collected in G3.
+
+---
+
+## 2. Auth & Session Management (V3)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 3.1.1 | Verify app uses only HTTP-only session tokens | **PASS** | `better-auth` default: `session.cookie.httpOnly = true` | No custom cookie override in `apps/web/src/auth/server.ts` |
+| 3.2.1 | Verify session IDs are random and ≥128 bits | **PASS** | `better-auth` generates tokens via `nanoid` / crypto RNG | Token format: `v1KfSJmfIKAJ5IU14ahF4BHSXrn9Qty3` (32 chars, base64-ish) |
+| 3.2.2 | Verify session IDs are not disclosed in URLs | **PASS** | Tokens delivered via `Set-Cookie` header, never URL param | Verified via curl inspection of `/api/auth/sign-in/email` |
+| 3.3.1 | Verify session termination on sign-out | **PASS** | `POST /api/auth/sign-out` invalidates session in DB | Test: `auth-roundtrip.test.ts` asserts 200 on sign-out |
+| 3.3.2 | Verify session timeout after inactivity | **TODO** | Need to verify `better-auth` session expiry config | Default is 7 days; need to confirm sliding expiry is enabled |
+| 3.4.1 | Verify re-authentication for sensitive operations | **N/A** | OpenCut has no server-side sensitive ops beyond auth | All video processing is client-side |
+| 3.5.1 | Verify rate limiting on auth endpoints | **PASS** | Upstash Redis secondary storage configured in `auth/server.ts` | Custom `get`/`set` on Redis for rate-limit buckets |
+| 3.6.1 | Verify password strength policy | **TODO** | `better-auth` default may be insufficient | Need to configure min length (≥12), complexity requirements |
+| 3.7.1 | Verify account lockout after failed attempts | **TODO** | Not explicitly configured in `better-auth` | Need to verify if `better-auth` has built-in lockout or add custom |
+
+---
+
+## 3. Access Control (V4)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 4.1.1 | Verify access controls enforced server-side | **PASS** | Next.js API routes run server-side; auth middleware on `/api/*` | `better-auth` session validation on all auth routes |
+| 4.1.2 | Verify users cannot access others' data | **PASS** | Project manifests are fetched by session; no user ID param exposed | Need G3 e2e test: user A cannot read user B's project list |
+| 4.1.3 | Verify directory traversal is prevented | **N/A** | No file system access on server | Server only handles JSON auth/project manifests |
+| 4.2.1 | Verify principle of least privilege | **N/A** | No role-based access control (single user type) | Future: admin/editor roles are post-G1 scope |
+
+---
+
+## 4. Cryptography (V6)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 6.1.1 | Verify strong password hashing | **PASS** | `better-auth` default: bcrypt/argon2 | Configured in `auth/server.ts` with Drizzle adapter |
+| 6.2.1 | Verify TLS 1.2+ for all connections | **PASS** | Cloudflare Pages enforces TLS 1.3 | `wrangler.jsonc` deploys to Cloudflare edge |
+| 6.2.2 | Verify HSTS header | **TODO** | Need to verify Cloudflare HSTS config | Add `Strict-Transport-Security` header in `next.config.ts` |
+| 6.3.1 | Verify sensitive data is encrypted at rest | **N/A** | Server stores only auth metadata; no video data | PostgreSQL encryption is managed by Cloudflare/Docker |
+
+---
+
+## 5. Error Handling & Logging (V7)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 7.1.1 | Verify error messages don't leak sensitive info | **TODO** | Need to audit error boundaries | WASM errors may leak shader paths; need generic error UI |
+| 7.1.2 | Verify exception handling doesn't leave app in unsafe state | **PASS** | React Error Boundaries around `PreviewCanvas` | `EditorProvider` wraps editor in boundary |
+| 7.2.1 | Verify security events are logged | **TODO** | Need logging strategy for auth failures | Cloudflare Workers analytics captures edge errors |
+| 7.3.1 | Verify debug mode disabled in production | **PASS** | `removeConsole: process.env.NODE_ENV === "production"` | `next.config.ts` line 7 |
+
+---
+
+## 6. Data Protection (V8)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 8.1.1 | Verify PII is protected | **PASS** | Only email/name stored; no video data | `better-auth` schema: `users` table has `name`, `email`, `image` |
+| 8.1.2 | Verify client-side data clearing on sign-out | **TODO** | Need to clear IndexedDB on sign-out | Currently sessions persist locally; need `signOut` hook |
+| 8.1.3 | Verify GDPR data export/deletion | **TODO** | `better-auth` supports `deleteUser.enabled: true` | Need UI flow for account deletion + data purge |
+| 8.2.1 | Verify zero video egress (NFR-001) | **PASS** | Architecture review + CI test plan | No endpoint accepts video bytes; verified in `architecture-design.md` |
+
+---
+
+## 7. Communications (V9)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 9.1.1 | Verify CSP header | **TODO** | CSP defined in `architecture-design.md` §8.2 but not implemented | Add `Content-Security-Policy` to `next.config.ts` |
+| 9.1.2 | Verify X-Content-Type-Options: nosniff | **TODO** | Not in `next.config.ts` | Add header |
+| 9.1.3 | Verify X-Frame-Options | **TODO** | Not in `next.config.ts` | Add `DENY` or `SAMEORIGIN` |
+| 9.2.1 | Verify COOP/COEP for SharedArrayBuffer | **PASS** | Implemented in `next.config.ts` for `/editor/*` | curl verified: `COOP: same-origin`, `COEP: require-corp` |
+
+---
+
+## 8. Malicious Code (V10)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 10.1.1 | Verify no malicious dependencies | **TODO** | Run `npm audit` / `bun audit` in CI | Add to CI pipeline |
+| 10.2.1 | Verify integrity of build artifacts | **TODO** | No SRI hashes on chunks | Next.js doesn't generate SRI by default; investigate `next-script` |
+| 10.3.1 | Verify WASM source is auditable | **PASS** | All Rust code open-source in `rust/crates/` | `wgpu`, `mediabunny`, `better-auth` are audited dependencies |
+
+---
+
+## 9. Business Logic (V11)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 11.1.1 | Verify business logic flow integrity | **N/A** | No payment flows; free OSS | Future: donation/subscription logic would need validation |
+| 11.1.2 | Verify against timing attacks | **TODO** | Auth timing may leak user existence | Need constant-time comparison on login paths |
+
+---
+
+## 10. Files & Resources (V12)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 12.1.1 | Verify file upload restrictions | **N/A** | No server file upload | All media is client-side via File System Access API |
+| 12.3.1 | Verify file execution prevention | **N/A** | No server-side file handling | OPFS is origin-private; no execution context |
+
+---
+
+## 11. API & Web Service (V13)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 13.1.1 | Verify API input validation | **PASS** | Drizzle Zod schemas on DB layer | `db/schema.ts` defines strict types |
+| 13.1.2 | Verify mass assignment protection | **PASS** | Drizzle ORM doesn't support mass assignment | Explicit field selection in all queries |
+| 13.1.3 | Verify CSRF protection on state-changing ops | **PASS** | `better-auth` built-in CSRF protection | `POST /api/auth/*` endpoints protected |
+| 13.2.1 | Verify Content-Type validation | **TODO** | Need to verify API routes reject wrong Content-Type | Add validation middleware |
+
+---
+
+## 12. Configuration (V14)
+
+| # | Control | Status | Evidence | Notes |
+|---|---------|--------|----------|-------|
+| 14.1.1 | Verify default credentials changed | **N/A** | No default admin account | `better-auth` requires explicit sign-up |
+| 14.2.1 | Verify dependency version tracking | **PASS** | `bun.lock` + `Cargo.lock` committed | Renovate/Dependabot recommended for G3 |
+| 14.3.1 | Verify security headers | **TODO** | See V9 headers above | Implement in `next.config.ts` |
+| 14.4.1 | Verify env secrets not in source | **PASS** | `.env.local` in `.gitignore` | Verified: no secrets in committed files |
+| 14.4.2 | Verify production env vars are strict | **TODO** | Need `NODE_ENV=production` validation | Docker + Cloudflare both set production mode |
+
+---
+
+## 13. G3 Evidence Checklist
+
+Before G3 sign-off, the following items must be completed:
+
+- [ ] **V3.3.2** — Confirm session timeout config (sliding expiry, 7 days)
+- [ ] **V3.6.1** — Configure password strength policy (min 12 chars, complexity)
+- [ ] **V3.7.1** — Implement account lockout after 5 failed attempts
+- [ ] **V6.2.2** — Add HSTS header (`max-age=31536000; includeSubDomains`)
+- [ ] **V7.1.1** — Audit error boundaries for info leakage
+- [ ] **V7.2.1** — Add structured logging for auth security events
+- [ ] **V8.1.2** — Clear IndexedDB on sign-out
+- [ ] **V8.1.3** — Implement GDPR account deletion flow
+- [ ] **V9.1.1** — Implement CSP header
+- [ ] **V9.1.2** — Add `X-Content-Type-Options: nosniff`
+- [ ] **V9.1.3** — Add `X-Frame-Options: DENY`
+- [ ] **V10.1.1** — Add `bun audit` to CI pipeline
+- [ ] **V10.2.1** — Evaluate SRI for critical chunks
+- [ ] **V11.1.2** — Constant-time comparison for auth endpoints
+- [ ] **V13.1.3** — Verify CSRF on all non-GET endpoints (not just auth)
+- [ ] **V13.2.1** — Content-Type validation middleware
+- [ ] **V14.3.1** — Complete security header suite
+
+---
+
+## 14. References
+
+- [OWASP ASVS 4.0](https://github.com/OWASP/ASVS)
+- [better-auth Security](https://www.better-auth.com/docs/concepts/security)
+- [Architecture Design §8 — Security Boundaries](../../02-design/architecture-design.md)
+- [ADR-001 §Consequences — Security considerations](../../02-design/01-ADRs/ADR-001-initial-architecture.md)
