@@ -1,12 +1,12 @@
 ---
 adr_id: ADR-001
 title: "Initial Architecture — Browser-Native Video Editor"
-status: Proposed
+status: Accepted
 tier: STANDARD
 stage: "02-design"
 owner: "@architect"
 created: 2026-05-16
-last_updated: 2026-05-16
+last_updated: 2026-05-17
 gate: G2
 ---
 
@@ -14,7 +14,7 @@ gate: G2
 
 ## Status
 
-**Proposed** — pending G2 (Design Approval) countersign by `@cto`.
+**Accepted** — CTO countersigned 2026-05-17 (G2 Approved).
 
 ---
 

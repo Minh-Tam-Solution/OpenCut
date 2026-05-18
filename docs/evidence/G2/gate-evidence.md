@@ -1,10 +1,10 @@
 # G2 Gate Evidence — Design Approved
 
 **Gate:** G2 — Design Approved  
-**Status:** RESUBMITTED — CTO findings fixed (v2)  
+**Status:** ✅ APPROVED — CTO countersigned (v2)  
 **Date:** 2026-05-17  
 **Proposed by:** @pm (package assembly) + @architect (deliverables)  
-**Pending:** CTO countersign on ADR-001, ADR-002, ADR-003  
+**Approved:** CTO countersigned ADR-001, ADR-002, ADR-003 on 2026-05-17  
 
 ---
 
@@ -12,10 +12,10 @@
 
 | # | Document | Path | Lines | Status |
 |---|----------|------|-------|--------|
-| 1 | Architecture Design | `docs/02-design/architecture-design.md` | ~640 | Proposed |
-| 2 | ADR-001 — Initial Architecture | `docs/02-design/01-ADRs/ADR-001-initial-architecture.md` | ~200 | Proposed |
-| 3 | ADR-002 — Analytics Instrumentation | `docs/02-design/01-ADRs/ADR-002-analytics-instrumentation.md` | ~230 | Proposed |
-| 4 | ADR-003 — Desktop WASM Decoupling | `docs/02-design/01-ADRs/ADR-003-desktop-wasm-decoupling.md` | ~280 | Proposed |
+| 1 | Architecture Design | `docs/02-design/architecture-design.md` | ~640 | Accepted |
+| 2 | ADR-001 — Initial Architecture | `docs/02-design/01-ADRs/ADR-001-initial-architecture.md` | ~200 | Accepted (CTO countersigned) |
+| 3 | ADR-002 — Analytics Instrumentation | `docs/02-design/01-ADRs/ADR-002-analytics-instrumentation.md` | ~230 | Accepted (CTO countersigned) |
+| 4 | ADR-003 — Desktop WASM Decoupling | `docs/02-design/01-ADRs/ADR-003-desktop-wasm-decoupling.md` | ~280 | Accepted (CTO countersigned) |
 
 ---
 
@@ -97,6 +97,12 @@ docs/02-design/01-ADRs/
 
 ## Next Gate
 
-**G3 — Implementation Ready** (after CTO countersign on ADR-001/002/003)  
-Owner: @coder  
-Prerequisites: CTO confirms 5 pending decisions, ADR status → Accepted, sprint plan updated for implementation.
+**G-Sprint — Sprint Planning** (CTO countersign complete)  
+Owner: @pjm + @coder  
+Prerequisites: Sprint plan updated with G2 carry-forward tasks (COOP/COEP, lazy-load WASM, OWASP plan).
+
+### CTO Carry-Forward Conditions (non-blocking for G2, required by G3)
+
+1. Implement COOP/COEP headers scoped to `/editor/*` in `next.config.ts`
+2. Implement lazy-load WASM on `/editor` route entry
+3. Start OWASP ASVS L2 validation plan at G2, complete evidence at G3

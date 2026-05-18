@@ -1,15 +1,19 @@
 ---
 adr_id: ADR-002
 title: "Analytics Instrumentation Strategy"
-status: Proposed
+status: Accepted
 tier: STANDARD
 stage: "02-design"
 owner: "@architect"
 created: 2026-05-17
+last_updated: 2026-05-17
 gate: G2
 authority:
   proposer: "@architect"
-  countersigners: []
+  countersigners:
+    - actor: "@cto"
+      date: "2026-05-17"
+      reference: "G2-review-v2"
   trigger: "OI-001 deferred from G1"
 ---
 
@@ -17,7 +21,7 @@ authority:
 
 ## Status
 
-**Proposed** — pending G2 (Design Approval) countersign by `@cto`.
+**Accepted** — CTO countersigned 2026-05-17 (G2 Approved).
 
 ---
 
