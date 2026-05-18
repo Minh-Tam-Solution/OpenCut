@@ -7,7 +7,7 @@ tier: STANDARD
 stage: "04-build"
 owner: "@pjm"
 created: 2026-05-16
-last_updated: 2026-05-16
+last_updated: 2026-05-18
 gate: G-Sprint
 ---
 
@@ -57,10 +57,10 @@ test frame to an `OffscreenCanvas` readable by the shell.
 
 | ID | Task | Assignee | Estimate | Status |
 ----|------|----------|----------|--------|
-| T-001 | Scaffold `opencut-wasm` Rust crate with `wasm-bindgen` and `wgpu` dependencies | @coder | 3 h | ☐ |
-| T-002 | Implement `render_frame` stub returning a solid-color `ImageData` buffer | @coder | 2 h | ☐ |
-| T-003 | Wire `OffscreenCanvas` bridge in the shell — `postMessage` + `Transferable` handoff | @coder | 2 h | ☐ |
-| T-004 | Add `wasm-pack build` step to CI; assert bundle size < 8 MB gzipped | @coder | 1 h | ☐ |
+| T-001 | Scaffold `opencut-wasm` Rust crate with `wasm-bindgen` and `wgpu` dependencies | @coder | 3 h | ✅ |
+| T-002 | Implement `render_frame` stub returning a solid-color `ImageData` buffer | @coder | 2 h | ✅ |
+| T-003 | Wire `OffscreenCanvas` bridge in the shell — `postMessage` + `Transferable` handoff | @coder | 2 h | ✅ |
+| T-004 | Add `wasm-pack build` step to CI; assert bundle size < 8 MB gzipped | @coder | 1 h | ✅ |
 
 ### US-002 — Authentication via `better-auth` (5 pts)
 
@@ -70,10 +70,10 @@ session. OWASP ASVS L2 checklist items for session management are green.
 
 | ID | Task | Assignee | Estimate | Status |
 ----|------|----------|----------|--------|
-| T-005 | Configure `better-auth` with Drizzle adapter and PostgreSQL connection | @coder | 2 h | ☐ |
-| T-006 | Implement `POST /api/auth/*` route handlers (sign-up, sign-in, sign-out, session) | @coder | 2 h | ☐ |
-| T-007 | Add CSRF protection and `SameSite=Strict` cookie flag; validate against OWASP ASVS L2 | @coder | 2 h | ☐ |
-| T-008 | Write integration tests for auth round-trip (register → sign-in → protected route → sign-out) | @tester | 2 h | ☐ |
+| T-005 | Configure `better-auth` with Drizzle adapter and PostgreSQL connection | @coder | 2 h | ✅ |
+| T-006 | Implement `POST /api/auth/*` route handlers (sign-up, sign-in, sign-out, session) | @coder | 2 h | ✅ |
+| T-007 | Add CSRF protection and `SameSite=Strict` cookie flag; validate against OWASP ASVS L2 | @coder | 2 h | 📝 **DEFERRED → G3** — Plan created at `docs/05-test/owasp-asvs-l2-plan.md`; evidence collection scheduled for G3 |
+| T-008 | Write integration tests for auth round-trip (register → sign-in → protected route → sign-out) | @tester | 2 h | ✅ |
 
 ### US-003 — Next.js Shell and Timeline Editor Mount (5 pts)
 
@@ -84,10 +84,10 @@ on the editor route to enable `SharedArrayBuffer`.
 
 | ID | Task | Assignee | Estimate | Status |
 ----|------|----------|----------|--------|
-| T-009 | Scaffold App Router structure: `app/editor/page.tsx`, `app/api/auth/[...all]/route.ts` | @coder | 1 h | ☐ |
-| T-010 | Implement lazy WASM load on editor route entry via `next/dynamic` with `ssr: false` | @coder | 2 h | ☐ |
-| T-011 | Configure COOP/COEP headers in `next.config.ts` scoped to the `/editor` route | @coder | 1 h | ☐ |
-| T-012 | Mount stub `<TimelinePanel>` component; wire WASM frame output to `<canvas>` preview | @coder | 2 h | ☐ |
+| T-009 | Scaffold App Router structure: `app/editor/page.tsx`, `app/api/auth/[...all]/route.ts` | @coder | 1 h | ✅ |
+| T-010 | Implement lazy WASM load on editor route entry via `next/dynamic` with `ssr: false` | @coder | 2 h | ✅ |
+| T-011 | Configure COOP/COEP headers in `next.config.ts` scoped to the `/editor` route | @coder | 1 h | ✅ |
+| T-012 | Mount stub `<TimelinePanel>` component; wire WASM frame output to `<canvas>` preview | @coder | 2 h | ✅ |
 
 ### US-004 — CI Pipeline Foundation (3 pts)
 
@@ -97,9 +97,9 @@ minutes on a standard runner.
 
 | ID | Task | Assignee | Estimate | Status |
 ----|------|----------|----------|--------|
-| T-013 | Add GitHub Actions workflow: `tsc --noEmit`, `eslint`, `wasm-pack build --release` | @coder | 2 h | ☐ |
-| T-014 | Add `vitest` unit test suite for shell utilities; baseline coverage report | @tester | 2 h | ☐ |
-| T-015 | Add Rust `cargo test` step for `opencut-wasm` crate logic | @tester | 1 h | ☐ |
+| T-013 | Add GitHub Actions workflow: `tsc --noEmit`, `eslint`, `wasm-pack build --release` | @coder | 2 h | ✅ |
+| T-014 | Add `bun:test` unit test suite for shell utilities; baseline coverage report | @tester | 2 h | ✅ |
+| T-015 | Add Rust `cargo test` step for `opencut-wasm` crate logic | @tester | 1 h | ✅ |
 
 ---
 
