@@ -78,21 +78,17 @@ jobs:
       - name: Lint
         working-directory: apps/web
         run: bun run lint
-        continue-on-error: true
 
       - name: Type check
         working-directory: apps/web
         run: bunx tsc --noEmit
-        continue-on-error: true
 
       - name: Run unit tests
         working-directory: apps/web
         run: bun test --ignore-pattern="**/__tests__/auth-roundtrip*"
-        continue-on-error: true
 
       - name: Run Rust tests
         run: cargo test --workspace
-        continue-on-error: true
 
   integration:
     runs-on: ubuntu-latest
