@@ -64,8 +64,8 @@ This document defines the validation plan for OpenCut against **OWASP Applicatio
 
 | # | Control | Status | Evidence | Notes |
 |---|---------|--------|----------|-------|
-| 7.1.1 | Verify error messages don't leak sensitive info | **DEFERRED** | No React Error Boundaries found in codebase | Risk: WASM errors may leak shader paths. **Action:** Add `<ErrorBoundary>` around `PreviewPanel` in Sprint 2. |
-| 7.1.2 | Verify exception handling doesn't leave app in unsafe state | **PASS** | React Error Boundaries around `PreviewCanvas` | `EditorProvider` wraps editor in boundary |
+| 7.1.1 | Verify error messages don't leak sensitive info | **DEFERRED** | No React `<ErrorBoundary>` or `componentDidCatch` found in codebase (verified via grep) | Risk: WASM errors may leak shader paths to console. **Action:** Add `<ErrorBoundary>` around `PreviewPanel` and editor root in Sprint 2. |
+| 7.1.2 | Verify exception handling doesn't leave app in unsafe state | **DEFERRED** | No `<ErrorBoundary>` exists — unhandled WASM/render errors propagate to React default handler | **Action:** Same as 7.1.1 — add error boundaries. Without them, a compositor crash can unmount the entire editor. Deferred to Sprint 2. |
 | 7.2.1 | Verify security events are logged | **PASS** | `better-auth` internal logging + Cloudflare Workers analytics | Auth failure events are logged server-side by `better-auth` default |
 | 7.3.1 | Verify debug mode disabled in production | **PASS** | `removeConsole: process.env.NODE_ENV === "production"` | `next.config.ts` line 7 |
 
