@@ -1,0 +1,65 @@
+==== Next.js build artifact summary ====
+total 16
+drwxr-xr-x@  6 dttai  staff   192 May 19 11:03 .
+drwxr-xr-x@  3 dttai  staff    96 May 19 11:03 ..
+drwxr-xr-x@ 10 dttai  staff   320 May 19 11:03 .next
+drwxr-xr-x@  3 dttai  staff    96 May 19 11:03 node_modules
+-rw-r--r--@  1 dttai  staff  3275 May 19 11:03 package.json
+-rw-r--r--@  1 dttai  staff  3737 May 19 11:03 server.js
+
+==== OpenNext partial output ====
+
+==== Next.js Routes Generated ====
+Route (app)               Revalidate  Expire
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/auth/[...all]
+├ ƒ /api/feedback
+├ ƒ /api/health
+├ ƒ /api/sounds/search
+├ ○ /blog
+├ ● /blog/[slug]
+├ ○ /brand
+├ ○ /changelog
+├ ● /changelog/[version]
+├ ○ /contributors                10m      1y
+├ ƒ /editor/[project_id]
+├ ○ /privacy
+├ ○ /projects
+├ ○ /roadmap
+├ ○ /robots.txt
+├ ƒ /rss.xml
+├ ○ /sitemap.xml
+├ ○ /sponsors
+└ ○ /terms
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+┌──────────────────────────────┐
+│ OpenNext — Generating bundle │
+
+==== ESBuild Error (OpenNext bundling step) ====
+
+✘ [ERROR] Expected ";" but found "\"/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/picomatch@4.0.4/node_modules/picomatch/index.js\""
+
+    ../../node_modules/.bun/fdir@6.5.0+5b2c60377f53a28e/node_modules/fdir/dist/index.mjs:443:3:
+      443 │   __"/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/pi...
+          │     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          ╵     ;
+
+/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:1463
+  let error = new Error(text);
+              ^
+
+Error: Build failed with 1 error:
+../../node_modules/.bun/fdir@6.5.0+5b2c60377f53a28e/node_modules/fdir/dist/index.mjs:443:3: ERROR: Expected ";" but found "\"/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/picomatch@4.0.4/node_modules/picomatch/index.js\""
+    at failureErrorWithLog (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:1463:15)
+    at /Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:924:25
+    at runOnEndCallbacks (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:1303:45)
+    at buildResponseToResult (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:922:7)
+    at /Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:949:16
+    at responseCallbacks.<computed> (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:601:9)

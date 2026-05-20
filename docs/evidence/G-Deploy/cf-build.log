@@ -1,0 +1,94 @@
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+Monorepo detected at /Users/dttai/Documents/Research/OpenCut
+App directory: /Users/dttai/Documents/Research/OpenCut/apps/web
+Next.js version : 16.1.3
+@opennextjs/cloudflare version: 1.19.4
+@opennextjs/aws version: 3.10.4
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+$ next build
+Starting content-collections content-collections.ts
+build started ...
+... finished build of 1 collection and 0 documents in 2ms
+▲ Next.js 16.1.3 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.2s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/18) ...
+  Generating static pages using 11 workers (4/18) 
+  Generating static pages using 11 workers (8/18) 
+  Generating static pages using 11 workers (13/18) 
+✓ Generating static pages using 11 workers (18/18) in 770.4ms
+  Finalizing page optimization ...
+
+Route (app)               Revalidate  Expire
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/auth/[...all]
+├ ƒ /api/feedback
+├ ƒ /api/health
+├ ƒ /api/sounds/search
+├ ○ /blog
+├ ● /blog/[slug]
+├ ○ /brand
+├ ○ /changelog
+├ ● /changelog/[version]
+├ ○ /contributors                10m      1y
+├ ƒ /editor/[project_id]
+├ ○ /privacy
+├ ○ /projects
+├ ○ /roadmap
+├ ○ /robots.txt
+├ ƒ /rss.xml
+├ ○ /sitemap.xml
+├ ○ /sponsors
+└ ○ /terms
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+┌──────────────────────────────┐
+│ OpenNext — Generating bundle │
+└──────────────────────────────┘
+
+✘ [ERROR] Expected ";" but found "\"/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/picomatch@4.0.4/node_modules/picomatch/index.js\""
+
+    ../../node_modules/.bun/fdir@6.5.0+5b2c60377f53a28e/node_modules/fdir/dist/index.mjs:443:3:
+      443 │   __"/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/pi...
+          │     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          ╵     ;
+
+/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:1463
+  let error = new Error(text);
+              ^
+
+Error: Build failed with 1 error:
+../../node_modules/.bun/fdir@6.5.0+5b2c60377f53a28e/node_modules/fdir/dist/index.mjs:443:3: ERROR: Expected ";" but found "\"/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/picomatch@4.0.4/node_modules/picomatch/index.js\""
+    at failureErrorWithLog (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:1463:15)
+    at /Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:924:25
+    at runOnEndCallbacks (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:1303:45)
+    at buildResponseToResult (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:922:7)
+    at /Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:949:16
+    at responseCallbacks.<computed> (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:601:9)
+    at handleIncomingPacket (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:656:12)
+    at Socket.readFromStdout (/Users/dttai/Documents/Research/OpenCut/node_modules/.bun/esbuild@0.25.4/node_modules/esbuild/lib/main.js:579:7)
+    at Socket.emit (node:events:508:28)
+    at Socket.emit (node:domain:489:12) {
+  errors: [Getter/Setter],
+  warnings: [Getter/Setter]
+}
+
+Node.js v24.11.0

@@ -1,0 +1,59 @@
+==== HOMEPAGE ====
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com https://images.marblecms.com https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdn.brandfetch.io
+Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding
+Cache-Control: s-maxage=31536000
+ETag: "14soz6oh9591b3d"
+Content-Type: text/html; charset=utf-8
+
+==== HEALTH ====
+{"status":"ok","db":"connected"}
+
+==== SECURITY HEADERS ====
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com https://images.marblecms.com https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdn.brandfetch.io
+Permissions-Policy: camera=(), microphone=(self), geolocation=()
+
+==== COOP/COEP (editor) ====
+Referrer-Policy: strict-origin-when-cross-origin
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; worker-src 'self' blob:; connect-src 'self' https://api.marblecms.com; media-src 'self' blob:; img-src 'self' blob: data: https://images.unsplash.com https://plus.unsplash.com https://images.marblecms.com https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdn.brandfetch.io
+
+==== AUTH SIGNUP ====
+HTTP/1.1 200 OK
+set-cookie: better-auth.session_token=wU4v8FTKtLT8TzgXRIfpzxSkU8H9R3AE.ft14kaTuCvkW1e1csB28YYthzqWnXvS6F06GiI03ys0%3D; Max-Age=604800; Path=/; HttpOnly; SameSite=Lax
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com https://images.marblecms.com https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdn.brandfetch.io
+Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding
+Content-Type: application/json
+Permissions-Policy: camera=(), microphone=(self), geolocation=()
+Date: Tue, 19 May 2026 03:57:58 GMT
+Transfer-Encoding: chunked
+
+{"token":"wU4v8FTKtLT8TzgXRIfpzxSkU8H9R3AE","user":{"name":"Deploy Test 2","email":"deploy-test2@opencut.local","emailVerified":false,"image":null,"createdAt":"2026-05-19T03:57:58.585Z","updatedAt":"2026-05-19T03:57:58.585Z","id":"WngT0SLiF69ijndawIKC8H2f82eQfF7j"}}
+==== AUTH SIGNIN ====
+HTTP/1.1 200 OK
+set-cookie: better-auth.session_token=PXVbgN4YQ6N18OLA42Ba1MRFnWA5j7Cv.g%2B1K%2Fas1B3QugGd17%2BDSmHeBJO%2FIcDG44QFs3hVtGHU%3D; Max-Age=604800; Path=/; HttpOnly; SameSite=Lax
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com https://images.marblecms.com https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdn.brandfetch.io
+Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding
+Content-Type: application/json
+Permissions-Policy: camera=(), microphone=(self), geolocation=()
+Date: Tue, 19 May 2026 03:57:58 GMT
+Transfer-Encoding: chunked
+
+{"redirect":false,"token":"PXVbgN4YQ6N18OLA42Ba1MRFnWA5j7Cv","user":{"name":"Deploy Test 2","email":"deploy-test2@opencut.local","emailVerified":false,"image":null,"createdAt":"2026-05-19T03:57:58.585Z","updatedAt":"2026-05-19T03:57:58.585Z","id":"WngT0SLiF69ijndawIKC8H2f82eQfF7j"}}
