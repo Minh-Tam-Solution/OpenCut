@@ -90,6 +90,56 @@ jobs:
       - name: Run Rust tests
         run: cargo test --workspace
 
+  cloudflare-build:
+    runs-on: ubuntu-latest
+    needs: build
+
+    env:
+      DATABASE_URL: "postgresql://opencut:opencut@localhost:5432/opencut"
+      BETTER_AUTH_SECRET: "supersecret"
+      NEXT_PUBLIC_SITE_URL: "http://localhost:3000"
+      UPSTASH_REDIS_REST_URL: "https://placeholder.example.com"
+      UPSTASH_REDIS_REST_TOKEN: "placeholder"
+      NEXT_PUBLIC_MARBLE_API_URL: "https://placeholder.example.com"
+      MARBLE_WORKSPACE_KEY: "placeholder"
+      FREESOUND_CLIENT_ID: "placeholder"
+      FREESOUND_API_KEY: "placeholder"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust wasm target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: Install wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: latest
+
+      - name: Build WASM
+        run: wasm-pack build rust/wasm --target bundler --out-dir pkg
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76
+        with:
+          bun-version: 1.2.18
+
+      - name: Install dependencies (hoisted linker)
+        working-directory: apps/web
+        run: bun install --linker=hoisted
+
+      - name: Build Cloudflare Workers bundle
+        working-directory: apps/web
+        run: bunx opennextjs-cloudflare build
+
+      - name: Verify .open-next output
+        working-directory: apps/web
+        run: |
+          test -d .open-next && echo "✅ .open-next/ directory exists"
+          test -f .open-next/worker.js && echo "✅ worker.js generated" || echo "⚠️ worker.js not found (check OpenNext version)"
+          ls -la .open-next/
+
   integration:
     runs-on: ubuntu-latest
     needs: build

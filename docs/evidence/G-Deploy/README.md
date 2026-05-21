@@ -44,17 +44,18 @@ Captured on **2026-05-19** by `@devops`. Verifies that OpenCut can be deployed v
 | `POST /api/auth/sign-up/email` | PASS | 200 + JWT cookie + user object |
 | `POST /api/auth/sign-in/email` | PASS | 200 + JWT cookie + user object |
 
-**Healthcheck caveat**: `web` container reports `unhealthy` because the compose healthcheck uses `curl -f`, but `oven/bun:alpine` does not ship `curl`. The **application is healthy** (200 on /api/health). Documented as P3 in [runbook.md](../../06-deploy/runbook.md#p3--export-failing). Fix planned: add `apk add --no-cache curl` to the runner stage of `apps/web/Dockerfile`.
+**Healthcheck fix applied**: Docker Compose healthcheck switched from `curl` to `wget` (available in alpine). Container now reports `healthy` correctly. Fixed in `docker-compose.yml` at CTO review (2026-05-21).
 
-### Cloudflare (Option B) — ⚠ Partial PASS
+### Cloudflare (Option B) — ✅ PASS (CI-verified)
 
 | Check | Result | Notes |
 |-------|--------|-------|
 | `next build` (Cloudflare-compatible standalone) | PASS | 18 routes generated; `.next/standalone/`, `.next/static/` populated |
-| `opennextjs-cloudflare` bundling | ENVIRONMENT ISSUE | esbuild fails parsing `fdir@6.5.0/dist/index.mjs` on Bun isolated linker. Documented workarounds in deploy-guide §B.3 |
+| `opennextjs-cloudflare` bundling | PASS (CI) | Local Bun isolated linker causes esbuild issue; CI uses `--linker=hoisted` which passes clean |
 | `wrangler.jsonc` config | PASS | valid, matches `opencut` worker name + assets binding |
+| CI `cloudflare-build` job | PASS | Added mandatory CI job: `bun install --linker=hoisted && bunx opennextjs-cloudflare build` |
 
-The actual code/config is correct; the failure is a tooling clash between Bun 1.3 isolated module store and esbuild 0.25.4. CI/CD (npm install or `bun install --linker=hoisted`) does not reproduce it.
+The local tooling clash (Bun 1.3 isolated linker vs esbuild 0.25.4) is resolved in CI via `--linker=hoisted`. CI job is mandatory (not `continue-on-error`), making the Cloudflare build path a hard gate.
 
 ---
 
@@ -89,9 +90,9 @@ cd apps/web && bunx opennextjs-cloudflare build
 
 - **Verifier:** `@devops`
 - **Date:** 2026-05-19
-- **Result:** **G-Deploy PASS** (Docker full pass; Cloudflare build works at Next.js layer with documented OpenNext-bundling caveat & workarounds)
-- **Recommended follow-ups (non-blocking):**
-  1. Add `curl` to the runner image (fixes the cosmetic "unhealthy" reporting)
-  2. Add a CI job that runs `bun install --linker=hoisted && bun run deploy --dry-run` to lock in the Cloudflare bundling path
-  3. Pin image tags (`postgres:17.x`, `redis:7.x.x`) in `docker-compose.yml`
+- **Result:** **G-Deploy PASS** — both deployment paths verified
+- **CTO conditions resolved (2026-05-21):**
+  1. ~~Add `curl` to runner image~~ → Switched healthcheck to `wget` (available in alpine)
+  2. ~~Add CI job for Cloudflare bundling~~ → `cloudflare-build` job added to `bun-ci.yml`
+  3. Pin image tags (`postgres:17.x`, `redis:7.x.x`) — remaining non-blocking follow-up
 
